@@ -25,6 +25,11 @@ This Neighborhood Map includes more than 10 restaurant that I am interested with
 - 1d68f69 feat: Add markers on the map
 - 041919f feat: First commit
 
+## How to run this project
+1. Git clone
+2. Run npm install
+3. Run npm start
+
 ## Features
 
 1. Display and mark multiple restaurants on the map
