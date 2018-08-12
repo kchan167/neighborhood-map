@@ -368,9 +368,7 @@ class App extends Component {
                         // Examine the text in the response
                         response.json().then(function (data) {
                             var location_data = data.response.venues[0];
-                            console.log(location_data);
                             var id = location_data.id;
-                            console.log(id);
                             location['id'] = id;
                             location['lat'] = location_data.location.lat;
                             location['lng'] = location_data.location.lng;
@@ -406,7 +404,6 @@ class App extends Component {
     openInfoWindow(marker) {
         this.closeInfoWindow();
         this.state.infowindow.open(this.state.map, marker);
-        console.log(marker);
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
         this.setState({
             'bouncingMarker': marker
@@ -415,7 +412,6 @@ class App extends Component {
         this.state.map.setCenter(marker.getPosition());
         this.state.map.setZoom(17);
         this.getMarkerInfo(marker);
-        console.log(this.state.bouncingMarker);
     }
 
     closeInfoWindow() {
@@ -444,9 +440,7 @@ class App extends Component {
                     // Examine the text in the response
                     response.json().then(function (data) {
                         var location_data = data.response.venue;
-                        console.log(location_data);
                         var imageUrl = location_data.bestPhoto.prefix + "130x130" + location_data.bestPhoto.suffix;
-                        console.log(imageUrl);
                         var image = "<p><img width='130' src=" + imageUrl + "/><p>";
                         var name = "<b>Name: <b>" + marker.name + "<br>";
                         var category = "<b>Category: </b>" + location_data.categories[0].name + "<br>";
@@ -460,7 +454,6 @@ class App extends Component {
                             }
                             locat += address;
                         });
-                        console.log(locat);
                         var formattedAddress = "<b>Address: </b>" + locat + '</p>';
 
                         self.state.infowindow.setContent("<div id='" + marker.id + "'>" + image + name + category + rating + totalLikes + formattedAddress + readMore + "</div>");

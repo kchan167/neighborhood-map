@@ -15,7 +15,6 @@ class LocationList extends Component {
     }
     // Filter Locations based on query
     locationFilter(event) {
-        console.log(this.state);
         this.props.closeInfoWindow();
         const {value} = event.target;
         var locations = [];
