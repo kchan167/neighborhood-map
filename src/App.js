@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import LocationList from './LocationList';
 import logo from './logo.svg';
 import './App.css';
 
@@ -79,10 +80,13 @@ class App extends Component {
             ],
             'map': '',
             'infowindow': '',
-            'hightLightMarker': ''
+            'bouncingMarker': ''
         };
 
+        // Bind functions to this so they can be passed to component
         this.initMap = this.initMap.bind(this);
+        this.openInfoWindow = this.openInfoWindow.bind(this);
+        this.closeInfoWindow = this.closeInfoWindow.bind(this);
     }
 
     componentDidMount() {
@@ -168,7 +172,7 @@ class App extends Component {
                 });
         });
         this.setState({
-            'alllocations': alllocations
+            'locations': alllocations
         });
     }
 
@@ -183,6 +187,7 @@ class App extends Component {
         this.state.map.setCenter(marker.getPosition());
         this.state.map.setZoom(17);
         this.getMarkerInfo(marker);
+        console.log(this.state.bouncingMarker);
     }
 
     closeInfoWindow() {
@@ -242,6 +247,12 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <LocationList key="100"
+                      locations={this.state.locations}
+                      openInfoWindow={this.openInfoWindow}
+                      closeInfoWindow={this.closeInfoWindow}
+                      bouncingMarker={this.state.bouncingMarker}
+        />
         <div id="map"></div>
       </div>
     );
