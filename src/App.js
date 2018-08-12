@@ -12,36 +12,26 @@ class App extends Component {
                 {
                     'name': "In-N-Out Burger",
                     'type': "Hamburger Restaurant",
-                    'latitude': 37.688160,
-                    'longitude': -122.472008,
                     'streetAddress': "260 Washington St, Daly City, CA 94015"
                 },
                 {
                     'name': "Carl's Jr",
                     'type': "Fast Food Restaurant",
-                    'latitude': 37.69228,
-                    'longitude': -122.4713,
                     'streetAddress': "2434 Junipero Serra Blvd, Daly City, CA 94015"
                 },
                 {
                     'name': "Val's Restaurant & Lounge",
                     'type': "American Restaurant",
-                    'latitude': 37.691690,
-                    'longitude': -122.471279,
                     'streetAddress': "2468 Junipero Serra Blvd, Daly City, CA 94015"
                 },
                 {
                     'name': "City Kebabs & Gyros",
                     'type': "Mediterranean Restaurant",
-                    'latitude': 37.693103,
-                    'longitude': -122.471270,
                     'streetAddress': "2408 Junipero Serra Blvd A, Daly City, CA 94015"
                 },
                 {
                     'name': "Miss Tomato Sandwich Shop",
                     'type': "Sandwich Shop",
-                    'latitude': 37.693165,
-                    'longitude': -122.472085,
                     'streetAddress': "199 87th St, Daly City, CA 94015"
                 },
                 {
@@ -54,50 +44,36 @@ class App extends Component {
                 {
                     'name': "Mr. Pizza Man",
                     'type': "Pizza Delivery",
-                    'latitude': 37.692921,
-                    'longitude': -122.475123,
                     'streetAddress': "321 87th St, Daly City, CA 94015"
                 },
                 {
                     'name': "Sam's Sandwiches & Coffee",
                     'type': "Sandwich Shop",
-                    'latitude': 37.693108,
-                    'longitude': -122.474726,
                     'streetAddress': "301 87th St, Daly City, CA 94015"
                 },
                 {
                     'name': "IHOP",
                     'type': "American Restaurant",
-                    'latitude': 37.693453,
-                    'longitude': -122.471718,
                     'streetAddress': "2398 Junipero Serra Blvd, Daly City, CA 94015"
                 },
                 {
                     'name': "Jade Dragon Restaurant",
                     'type': "Chinese Restaurant",
-                    'latitude': 37.693911,
-                    'longitude': -122.471704,
                     'streetAddress': "2368 Junipero Serra Blvd, Daly City, CA 94015"
                 },
                 {
                     'name': "Fil-Am Cuisine",
                     'type': "Filipino Restaurant",
-                    'latitude': 37.693499,
-                    'longitude': -122.465582,
                     'streetAddress': "66 School St, Daly City, CA 94014"
                 },
                 {
                     'name': "Chick N Coop",
                     'type': "American Restaurant",
-                    'latitude': 37.690343,
-                    'longitude': -122.466018,
                     'streetAddress': "2434 Junipero Serra Blvd, Daly City, CA 94015"
                 },
                 {
                     'name': "El Taconazo",
                     'type': "Mexican Restaurant",
-                    'latitude': 37.690169,
-                    'longitude': -122.466134,
                     'streetAddress': "7384 Mission St, Daly City, CA 94014"
                 }
             ],
@@ -146,21 +122,50 @@ class App extends Component {
 
         var alllocations = [];
         this.state.locations.forEach(function (location) {
-            var longname = location.name + ' (' + location.type + ')';
-            var marker = new window.google.maps.Marker({
-                position: new window.google.maps.LatLng(location.latitude, location.longitude),
-                animation: window.google.maps.Animation.DROP,
-                map: map
-            });
+            var clientId = "GQ0W5ZMV5SZD4PIR2PPJMOHSEBIPNARGAF0NVXKITNXYO4QJ";
+            var clientSecret = "0ENY13NDVZMVLDRJAOKBEDKRMPYJ5JMGEJGNN4ZZ3BCJQJ3W";
+            var url = "https://api.foursquare.com/v2/venues/search?client_id=" + clientId + "&client_secret=" + clientSecret + "&v=20180323&limit=1&ll=37.693399,-122.468597&query=" + location.name;
+            fetch(url)
+                .then(
+                    function (response) {
+                        if (response.status !== 200) {
+                            console.log("Sorry data can't be loaded");
+                            return;
+                        }
 
-            marker.addListener('click', function() {
-                self.openInfoWindow(marker);
-            });
+                        // Examine the text in the response
+                        response.json().then(function (data) {
+                            var location_data = data.response.venues[0];
+                            console.log(location_data);
+                            var id = location_data.id;
+                            console.log(id);
+                            location['id'] = id;
+                            location['lat'] = location_data.location.lat;
+                            location['lng'] = location_data.location.lng;
+                            var longname = location.name + ' (' + location.type + ')';
+                            var marker = new window.google.maps.Marker({
+                                position: new window.google.maps.LatLng(location.lat, location.lng),
+                                animation: window.google.maps.Animation.DROP,
+                                map: map
+                            });
 
-            location.longname = longname;
-            location.marker = marker;
-            location.display = true;
-            alllocations.push(location);
+                            marker['name'] = location.name;
+                            marker['id'] = location.id;
+
+                            marker.addListener('click', function() {
+                                self.openInfoWindow(marker);
+                            });
+
+                            location.longname = longname;
+                            location.marker = marker;
+                            location.display = true;
+                            alllocations.push(location);
+                        });
+                    }
+                )
+                .catch(function (err) {
+                    console.log("Sorry data can't be loaded");
+                });
         });
         this.setState({
             'alllocations': alllocations
@@ -192,8 +197,46 @@ class App extends Component {
 
     getMarkerInfo(marker) {
         var self = this;
-        var test = '<b>Testing</b>';
-        self.state.infowindow.setContent(test);
+        var clientId = "GQ0W5ZMV5SZD4PIR2PPJMOHSEBIPNARGAF0NVXKITNXYO4QJ";
+        var clientSecret = "0ENY13NDVZMVLDRJAOKBEDKRMPYJ5JMGEJGNN4ZZ3BCJQJ3W";
+        var url = "https://api.foursquare.com/v2/venues/"+ marker.id + "?client_id=" + clientId + "&client_secret=" + clientSecret + "&v=20180811";
+        fetch(url)
+            .then(
+                function (response) {
+                    if (response.status !== 200) {
+                        self.state.infowindow.setContent("Sorry data can't be loaded");
+                        return;
+                    }
+
+                    // Examine the text in the response
+                    response.json().then(function (data) {
+                        var location_data = data.response.venue;
+                        console.log(location_data);
+                        var imageUrl = location_data.bestPhoto.prefix + "130x130" + location_data.bestPhoto.suffix;
+                        console.log(imageUrl);
+                        var image = "<p><img width='130' src=" + imageUrl + "/><p>";
+                        var name = "<b>Name: <b>" + marker.name + "<br>";
+                        var category = "<b>Category: </b>" + location_data.categories[0].name + "<br>";
+                        var rating = "<b>Rating: </b>" + location_data.rating + "/10<br>";
+                        var totalLikes = "<b>Likes: </b>" + location_data.likes.count + "<br>";
+                        var locat = '';
+                        var readMore = '<a href="https://foursquare.com/v/'+ marker.id +'" target="_blank">Read More on Foursquare Website</a>';
+                        location_data.location.formattedAddress.forEach(function(address, index) {
+                            if(index > 0) {
+                                locat += ", ";
+                            }
+                            locat += address;
+                        });
+                        console.log(locat);
+                        var formattedAddress = "<b>Address: </b>" + locat + '</p>';
+
+                        self.state.infowindow.setContent("<div id='" + marker.id + "'>" + image + name + category + rating + totalLikes + formattedAddress + readMore + "</div>");
+                    });
+                }
+            )
+            .catch(function (err) {
+                self.state.infowindow.setContent("Sorry data can't be loaded");
+            });
     }
 
   render() {
