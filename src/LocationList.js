@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
+import LocationItem from './LocationItem';
 
 class LocationList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             'locations': '',
-            'query': 'TEST',
-            'show': true,
+            'query': '',
+            'list': false,
         };
 
         this.locationFilter = this.locationFilter.bind(this);
@@ -40,13 +41,22 @@ class LocationList extends Component {
         });
     }
 
-    toggleList(){
+    toggleList() {
         this.setState({
-            'show': !this.state.show
+            'list': !this.state.list
         });
     }
 
     render() {
+        var locationlist = this.state.locations.map(function(listItem, index) {
+            return (
+                    <LocationItem key={index}
+                                  openInfoWindow={this.props.openInfoWindow.bind(this)}
+                                  data={listItem}
+                    />
+            );
+        }, this);
+
         return(
             <div className="search">
                 <input role="search"
@@ -57,6 +67,10 @@ class LocationList extends Component {
                        placeholder="Please enter Restaurant's name or food category"
                        onChange={this.locationFilter}
                 />
+                <ul>
+                    {this.state.list && locationlist}
+                </ul>
+                <button className="button" onClick={this.toggleList}>Toggle List</button>
             </div>
         );
     }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import LocationList from './LocationList';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -38,8 +37,6 @@ class App extends Component {
                 {
                     'name': "Krispy Kreme Doughnuts",
                     'type': "Bakery",
-                    'latitude': 37.688781,
-                    'longitude': -122.471586,
                     'streetAddress': "1575 Sullivan Ave, Daly City, CA 94015"
                 },
                 {
@@ -108,7 +105,6 @@ class App extends Component {
         window.google.maps.event.addListener(InfoWindow, 'closeclick', function() {
             self.closeInfoWindow();
         })
-
         this.setState({
             'map': map,
             'infowindow': InfoWindow
@@ -155,7 +151,6 @@ class App extends Component {
 
                             marker['name'] = location.name;
                             marker['id'] = location.id;
-
                             marker.addListener('click', function() {
                                 self.openInfoWindow(marker);
                             });
@@ -179,6 +174,7 @@ class App extends Component {
     openInfoWindow(marker) {
         this.closeInfoWindow();
         this.state.infowindow.open(this.state.map, marker);
+        console.log(marker);
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
         this.setState({
             'bouncingMarker': marker
@@ -251,7 +247,6 @@ class App extends Component {
                       locations={this.state.locations}
                       openInfoWindow={this.openInfoWindow}
                       closeInfoWindow={this.closeInfoWindow}
-                      bouncingMarker={this.state.bouncingMarker}
         />
         <div id="map"></div>
       </div>

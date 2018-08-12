@@ -4,6 +4,21 @@ body {
   font-family: sans-serif;
 }
 
+ul {
+    background: #fff;
+    border: 1px solid #a9a9a9;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow: auto;
+    display: block;
+    list-style-type: disc;
+}
+
+li {
+    display: list-item;
+}
+
 .search {
     z-index: 1;
     position: fixed;
@@ -14,4 +29,13 @@ body {
 .search-field {
     width: 320px;
     padding: 5px;
+}
+
+.button {
+    text-align: center;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #a9a9a9;
+    cursor: pointer;
+    width: 360px;
 }
