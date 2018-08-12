@@ -26,7 +26,7 @@ This Neighborhood Map includes more than 10 restaurant that I am interested with
 - 041919f feat: First commit
 
 ## How to run this project
-1. Git clone
+1. Git clone https://github.com/kchan167/neighborhood-map.git
 2. Run npm install
 3. Run npm start
 
