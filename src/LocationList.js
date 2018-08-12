@@ -54,7 +54,7 @@ class LocationList extends Component {
                        id="search-field"
                        className="search-field"
                        type="text"
-                       placeholder="Please Enter Restaurant's name or food category (Ex. Pizza)"
+                       placeholder="Please enter Restaurant's name or food category"
                        onChange={this.locationFilter}
                 />
             </div>
