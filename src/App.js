@@ -393,7 +393,7 @@ class App extends Component {
                     }
                 )
                 .catch(function (err) {
-                    console.log("Sorry data can't be loaded");
+                    alert(err.name + err.message);
                 });
         });
         this.setState({
@@ -461,7 +461,7 @@ class App extends Component {
                 }
             )
             .catch(function (err) {
-                self.state.infowindow.setContent("Sorry data can't be loaded");
+                self.state.infowindow.setContent("Sorry data can't be loaded" + err.message);
             });
     }
 
